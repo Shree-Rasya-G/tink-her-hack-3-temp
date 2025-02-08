@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmwise Chatbot</title>
+    <style>
+        /* Add your custom styling here */
+        #chatbox {
+            width: 300px;
+            height: 400px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .user-msg, .bot-msg {
+            margin-bottom: 10px;
+        }
+        .user-msg {
+            text-align: right;
+        }
+        .bot-msg {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h2>Farmwise Support Chatbot</h2>
+    <div id="chatbox"></div>
+    <input type="text" id="user_input" placeholder="Ask me about farming..." onkeyup="sendMessage(event)">
+    <script>
+        function sendMessage(event) {
+            if (event.key === 'Enter') {
+                const user_input = document.getElementById('user_input').value;
+                const chatbox = document.getElementById('chatbox');
+                chatbox.innerHTML += `<div class="user-msg">${user_input}</div>`;
+
+                fetch(`/chatbot/response/?message=${user_input}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        chatbox.innerHTML += `<div class="bot-msg">${data.response}</div>`;
+                        document.getElementById('user_input').value = '';
+                    });
+            }
+        }
+    </script>
+</body>
+</html>
+
+
